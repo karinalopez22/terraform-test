@@ -21,3 +21,21 @@ resource "ibm_is_subnet" "terraformsubnet1" {
     ibm_is_vpc_address_prefix.terraformprefix2
   ]
 }
+
+resource "ibm_is_vpc_address_prefix" "terraformprefix3" {
+  name = "terraform-prefix-3"
+  zone = "eu-de-2"
+  vpc  = ibm_is_vpc.terraform-vpc.id
+  cidr = "10.242.64.0/18"
+}
+
+resource "ibm_is_subnet" "terraformsubnet2" {
+  name            = "terraform-subnet2"
+  vpc             = ibm_is_vpc.terraform-vpc.id
+  zone            = "eu-de-2"
+  ipv4_cidr_block = "10.242.64.0/18"
+  resource_group = var.resource_group
+  depends_on = [
+    ibm_is_vpc_address_prefix.terraformprefix3
+  ]
+}
